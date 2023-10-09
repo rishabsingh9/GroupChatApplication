@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const sequelize=require('./util/database')
 
 const User=require('./models/user');
+const Message=require('./models/messages');
 
 
 const app = express();
@@ -24,10 +25,13 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const userRoutes=require('./routes/user');
+const messageRoutes=require('./routes/messages');
 
 app.use('/chatapp',userRoutes);
+app.use('/chatapp',messageRoutes);
 
-
+User.hasMany(Message);
+Message.belongsTo(User);
 
 sequelize
 //.sync({force:true})
