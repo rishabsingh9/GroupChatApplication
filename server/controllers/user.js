@@ -76,3 +76,15 @@ function generateAccessToken(id,name,isPremiumUser){
       });
     }
   };
+
+  exports.getUsers=async(req,res,next)=>{
+    try {
+      const data=await User.findAll();
+      res.status(200).json({user:data});
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    }
+  }
