@@ -97,3 +97,16 @@ function generateAccessToken(id,name,isPremiumUser){
       });
     }
   }
+
+  exports.getUser=async(req,res,next)=>{
+    try {
+      let id=req.params.id;
+      const data=await User.findOne({id});
+      res.status(200).json({user:data});
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        error: err,
+      });
+    }
+  }

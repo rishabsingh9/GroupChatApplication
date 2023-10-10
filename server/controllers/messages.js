@@ -17,8 +17,15 @@ exports.postMessage=async(req,res,next)=>{
 }
 
 exports.getMessages=async(req,res,next)=>{
+    let lmi=req.params.lastMessageId
     try {
-        const data=await Message.findAll();
+        const data = await Message.findAll({
+            where: {
+                id: {
+                    [Sequelize.Op.gt]: lastMessageId // Use the Sequelize operator for greater than (gt)
+                }
+            }
+        });
         res.status(200).json({messages:data});
     } catch (err) {
         res.status(500).json({
