@@ -57,7 +57,7 @@ function generateAccessToken(id,name,isPremiumUser){
           if (result == true) {
             res
               .status(200)
-              .json({ success: true, message: "User logged in successfully" ,token:generateAccessToken(data[0].id,data[0].name,data[0].isPremiumUser)});
+              .json({ success: true, message: "User logged in successfully" ,token:generateAccessToken(data[0].id,data[0].name,)});
           } else {
             return res
               .status(400)
@@ -79,8 +79,17 @@ function generateAccessToken(id,name,isPremiumUser){
 
   exports.getUsers=async(req,res,next)=>{
     try {
-      const data=await User.findAll();
-      res.status(200).json({user:data});
+      const users=await User.findAll();
+      let len=users.length;
+      //console.log(users[0].name);
+      let names=[];
+      names[0]=req.user.id;
+      for(let i=0;i<len;i++){
+        let id=users[i].id;
+        names[id]=users[i].name;
+      }
+
+      res.status(200).json({namesArr:names});
     } catch (err) {
       console.log(err);
       res.status(500).json({
