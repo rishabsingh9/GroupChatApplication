@@ -97,6 +97,18 @@ function generateAccessToken(id,name,isPremiumUser){
       });
     }
   }
+exports.getAllUsers=async(req,res,next)=>{
+  try {
+    const data=await User.findAll();
+    res.status(200).json({allusers:data});
+  } catch (err) {
+    res.status(500).json({
+      error: err,
+    });
+  }
+}
+
+
 
   exports.getUser=async(req,res,next)=>{
     try {

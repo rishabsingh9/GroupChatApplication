@@ -50,6 +50,18 @@ function getMessagesFromStorage() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+    
+    try {
+        const token=localStorage.getItem('token');
+        const response2=await axios.get(`http://localhost:3000/chatapp/get-groups`,{ headers: { "Authorization": token } });
+        console.log("groups",response2.data.groups);
+        let len=response2.data.groups.length;
+        for(let i=0;i<len;i++){
+            showGroups(response2.data.groups[i].groupname);
+        } 
+    } catch (err) {
+        console.log(err);
+    }
     getMessagesFromStorage();
     // Display messages from chatMessages array
     chatMessages.forEach(async(message) => {
@@ -57,6 +69,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const response=await axios.get(`http://localhost:3000/chatapp/get-user/${id}`)
         displayMessage(response.data.user.name, message.message, message.messageClass);
     });
+
 })
 
 function displayMessage(name, message) {
@@ -68,31 +81,6 @@ function displayMessage(name, message) {
 }
 
 
-// window.addEventListener('DOMContentLoaded', async () => {
-//     const token = localStorage.getItem('token');
-//     try {
-//         const response = await axios.get('http://localhost:3000/chatapp/get-messages', { headers: { "Authorization": token } });
-//         const users = await axios.get('http://localhost:3000/chatapp/get-users', { headers: { "Authorization": token } });
-//         console.log(users.data.namesArr);
-//         let len = response.data.messages.length;
-//         console.log("len", len);
-//         for (let i = 0; i < len; i++) {
-//             console.log(response.data.messages[i])
-//             const userId = response.data.messages[i].userId;
-//             console.log('userid', userId);
-//             let name = users.data.namesArr[userId];
-            
-//             if (userId === Number(users.data.namesArr[0])) {
-//                 name = "You";
-//                 displayMessage(name, response.data.messages[i].message, 'your-message');
-//             } else {
-//                 displayMessage(name, response.data.messages[i].message, 'other-message');
-//             }
-//         }
-//     } catch (err) {
-//         console.log(err);
-//     }
-// })
 async function fetchdata(){
     const lastMessageId = chatMessages.length > 0 ? chatMessages[chatMessages.length - 1].id : null;
     const token = localStorage.getItem('token');
@@ -105,16 +93,11 @@ async function fetchdata(){
         messageContainer.innerHTML = '';
         console.log("len", len);
         for (let i = 0; i < len; i++) {
-            addMessageToStorage(response.data.messages[i]);
+            addMessageToStorage(response.data.messages[i].message);
             console.log(response.data.messages[i])
             const userId = response.data.messages[i].userId;
             console.log('userid', userId);
             let name = users.data.namesArr[userId];
-            
-            // Clear the chat container before displaying new messages
-            
-
-
             if (userId === Number(users.data.namesArr[0])) {
                 name = "You";
                 displayMessage(name, response.data.messages[i].message, 'your-message');
@@ -137,6 +120,84 @@ function displayMessage(name, message, messageClass) {
     messageElement.className = `message ${messageClass}`;
     messageElement.innerHTML = `<strong>${name}:</strong> ${message}`;
     messageContainer.appendChild(messageElement);
-    messageContainer.scrollTop = messageContainer.scrollHeight;
+   // messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 fetchdata();
+
+
+//groups
+var createGroup=document.getElementById("creategroup");
+createGroup.addEventListener('click',()=>{
+    var form=document.getElementById('groupform');
+    form.style.display="block";
+})
+
+var adduserbtn=document.getElementById("adduserbtn");
+adduserbtn.addEventListener('click',async()=>{
+try {
+   const response=await axios.get(`http://localhost:3000/chatapp/get-all-users`);
+   let len=response.data.allusers.length;
+   for(let i=0;i<len;i++){
+    showAddUser(response.data.allusers[i]);
+   }
+   var adduser=document.getElementById('adduser');
+   var btn=document.createElement('button');
+   btn.textContent='Create Now';
+   adduser.appendChild(btn);
+
+   btn.addEventListener('click',async()=>{
+    var groupname=document.getElementById("groupname").value;
+    const selectedUserIds = [];
+    selectedUserIds.length = 0; // Clear the array
+    const selectedCheckboxes = document.querySelectorAll('.user-checkbox:checked');
+    selectedCheckboxes.forEach((checkbox) => {
+        selectedUserIds.push(checkbox.value);
+    });
+    let obj={
+        groupname:groupname,
+        selectedUserIds:selectedUserIds
+    }
+    try {
+      const response=  await axios.post(`http://localhost:3000/chatapp/add-group`,obj);
+      let id=response.data.group.id;
+      console.log("group id",id);
+      let obj2={
+        id:id,
+        selectedUserIds:selectedUserIds
+    }
+      const response2=  await axios.post(`http://localhost:3000/chatapp/add-group-users`,obj2); 
+        console.log(response2.data.groupuser);
+    await axios.get(`http://localhost:3000/chatapp/get-group-user/`)
+    } catch (err) {
+        console.log(err);
+    }
+   })
+
+} catch (err) {
+    console.log(err);
+}
+})
+
+function showAddUser(user) {
+    var adduser = document.getElementById('adduser');
+    const div = document.createElement('div');
+    
+    // Create a checkbox element and label for the user
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'user-checkbox';
+    checkbox.value = user.id; // You can set the user's ID as the value
+    const label = document.createElement('label');
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(user.name)); // Display user's name
+    
+    div.appendChild(label);
+    adduser.appendChild(div);
+}
+
+function showGroups(name){
+    var groupList=document.getElementById('group-list');
+    const groupElement = document.createElement('div');
+        groupElement.innerHTML =`${name}` ;
+    groupList.appendChild(groupElement);
+}

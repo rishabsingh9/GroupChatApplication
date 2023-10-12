@@ -19,6 +19,7 @@ exports.postMessage=async(req,res,next)=>{
 exports.getMessages=async(req,res,next)=>{
     let lmi=req.params.lastMessageId
     try {
+        if(lmi){
         const data = await Message.findAll({
             where: {
                 id: {
@@ -26,7 +27,13 @@ exports.getMessages=async(req,res,next)=>{
                 }
             }
         });
+    
         res.status(200).json({messages:data});
+    }
+    else{
+        const data=await Message.findAll();
+        res.status(200).json({messages:data});
+    }
     } catch (err) {
         res.status(500).json({
             error: err,
