@@ -45,6 +45,8 @@ Group.belongsToMany(User, {
    through: GroupUsers,
  });
 
+ Group.hasMany(Message);
+
 sequelize
 //.sync({force:true})
 .sync()

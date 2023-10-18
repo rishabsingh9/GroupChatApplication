@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Group</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container" id="newGroupContainer">
+    <h3 class="text-center" style="color: rgb(6, 6, 73);"><strong>New Group</strong></h3>
+    <form>
+        <div class="form-group">
+            <label for="groupname">Group Name</label>
+            <input type="text" class="form-control" id="groupname" placeholder="Enter group name">
+        </div>
+        <button type="button" class="btn btn-primary" id="nextButton">Next</button>
+    </form>
+</div>
+<div id="adduser" style="display: none;">
+    <h3 class="text-center" style="color: rgb(6, 6, 73);"><strong>Add Users</strong></h3>
+    
+</div>
+
+<!-- Include Bootstrap JS (Optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="newgroup.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+</body>
+</html>
+

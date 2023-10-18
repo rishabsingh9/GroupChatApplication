@@ -10,10 +10,10 @@ async function login(e) {
         password: document.getElementById("password").value
     }
     try{
-        const response=await axios.post('http://localhost:3000/expense/user/login',loginDetails)
+        const response=await axios.post('http://localhost:3000/chatapp/user/login',loginDetails)
         if(response.status==200){
             localStorage.setItem('token',response.data.token);
-            window.location.href="/Front-End/expense.html";
+           window.location.href="/FrontEnd/chatapp.html";
             alert(response.data.message);
         }
         else{
@@ -28,7 +28,7 @@ async function login(e) {
 }
 const signup=document.getElementById('signup');
 signup.addEventListener('click',()=>{
-    window.location.href="/Front-End/signUp.html";
+    window.location.href="/FrontEnd/signup.html";
 })
 const forgot=document.getElementById("forgot");
 forgot.addEventListener('click',()=>{

@@ -10,7 +10,11 @@ const Message=sequelize.define('message',{
         unique:true,
         primaryKey:true
     },
-    message:Sequelize.TEXT
+    message:Sequelize.TEXT,
+    groupId: {
+        type: Sequelize.INTEGER,
+        allowNull: true // Allow groupId to be NULL
+    }
 })
 
 module.exports=Message;

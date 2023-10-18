@@ -9,20 +9,58 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h3 style="color: white; text-align: center;" id="chatapp">Chat App</h3>
+    <div id="app-container">
+        <div id="left-sidebar">
+            <div id="search-box">
+                <strong style="color:rgb(6, 6, 73) ;">Search User</strong>
+                <input type="text" id="search-input" placeholder="Enter email or phone no.">
+                <button id="search-button">Search</button>
+            </div>
+            <div id="my groups" style="border:1px solid #ccc ;">
+                <h5> <strong style="color: rgb(6, 6, 73);">My Groups</strong> </h5>
+            <div  id="group-list">
+
+            </div>
+            </div>
+            
+            <button class="btn btn-secondary" id="creategroup" type="click">Create new group</button>
+                <div style="display: none;" id="groupform" >
+                <input type="text" id="groupname" placeholder="Enter group name">
+                <button type="click" id="adduserbtn">Add New Users</button>
+            </div>
+            <div id="adduser"></div>
+        </div>
+        
     <div id="chat-container">
-        <h1>Chat App</h1>
+        
+        <div id="groupnameontop" >
+           
+        </div>
+   
+        
+
         <div id="message-container">
+            
             <!-- Messages will be displayed here -->
         </div>
-        <input type="text" id="message-input" placeholder="Type your message">
-        <button id="send-button">Send</button>
+        <input type="text" id="message" placeholder="Type your message">
+        <button type="click" id="send-button">Send</button>
     </div>
+    
+
+    
 <!-- Include Bootstrap JS (Optional) -->
+<!-- Include jQuery, Popper.js, and Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Include Axios JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+
+<!-- Include your custom JavaScript file -->
 <script src="chatapp.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+
 </body>
 </html>

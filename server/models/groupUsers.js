@@ -10,6 +10,7 @@ const GroupUsers=sequelize.define('groupuser',{
         unique:true,
         primaryKey:true
     },
+    isadmin:Sequelize.BOOLEAN
 })
 
 module.exports=GroupUsers;

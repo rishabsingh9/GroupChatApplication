@@ -6,6 +6,6 @@ const userAuthentication=require('../middleware/auth');
 const router=express();
 
 router.post('/messages',userAuthentication.authenticate,messageController.postMessage);
-router.get('/get-messages',messageController.getMessages);
+router.get('/get-messages/:groupId',messageController.getMessages);
 
 module.exports=router;

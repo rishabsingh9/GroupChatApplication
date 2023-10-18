@@ -1,27 +1,62 @@
+/* Style the chat container */
+
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f2f2f2;
 }
+/* Add styling for the app container to hold the sidebar and chat container */
+#app-container {
+    margin-top: 40px;
+    display: flex;
+    height: auto;
+}
+
+/* Style the left sidebar */
+#left-sidebar {
+    width: 250px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-right: 1px solid #ccc;
+}
+
+#group-list {
+    list-style: none;
+    padding: 0;
+}
+
+#group-list li {
+    margin-bottom: 10px;
+}
+
+
+/* Add any additional styling as needed */
+
+/* Style the chat container */
+
 #chat-container {
-    max-width: 800px;
-    margin: 0 auto;
+    flex-grow: 1;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    height: auto; 
 }
+
 #message-container {
-    height: 300px;
+    height: 500px;
     overflow-y: scroll;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    clear: both;
 }
-#message-input {
-    width: 80%;
+#message {
+    width: 90%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -31,9 +66,143 @@ body {
    
 
     padding: 10px;
-    background-color: #007bff;
+    background-color: rgb(7, 7, 70);
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* CSS in your "style.css" file or inline styles */
+.message {
+    margin-top: 20px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    display: block; /* Make each message a block element (one per line) */
+    clear: both; /* Clear floats for new lines */
+    overflow: hidden; /* Hide overflow to ensure proper alignment */
+}
+
+.your-message, .other-message {
+    padding: 8px;
+    border-radius: 5px;
+    margin: 5px;
+    clear: both;
+    overflow: hidden;
+}
+
+.your-message {
+    background-color: rgb(156, 223, 159); ; /* Blue background for your messages */
+    color: #fff; /* White text for your messages */
+    text-align: right; /* Align your messages to the right */
+}
+
+.other-message {
+    background-color: #f2f2f2; /* Light gray background for other messages */
+    text-align: left; /* Align other messages to the left */
+}
+
+#group-list{
+    border: 1px solid #ccc;
+   
+}
+#groupnameontop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a6abb0; /* Blue background for the group name */
+    color: #fff; /* White text for the group name */
+    padding: 10px; /* Add some padding for better visibility */
+    font-weight: bold; /* Make the text bold */
+    margin-bottom: 10px;
+    
+}
+
+#search-box {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 50px; /* This margin adds space below the search box */
+    margin-top: 10px; /* Add margin at the top to create a gap */
+}
+
+/* Style for individual group items */
+.group-item {
+    border: 1px solid #ba2121;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Add a smooth transition for background color change */
+}
+
+.group-item:hover {
+    background-color: rgb(6, 6, 73);/* Change the background color to orange on hover */
+    color:white;
+}
+
+/* Style for the hover effect */
+.group-item-hover {
+    background-color: orange; /* Change the background color to orange on hover */
+}
+
+.container{
+    border: 1px solid rgb(6, 6, 73);
+    width: 700px;
+    
+}
+
+/* Style for the container that holds all users */
+#adduser {
+    width: 600px;
+    border: 1px solid rgb(6, 6, 73);;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 400px;
+}
+
+/* Style for each user box */
+.user-box {
+    border: 1px solid #ccc;
+    margin-bottom: 35px;
+    padding: 10px;
+    overflow: hidden; /* Clear floats for the checkbox and label */
+    
+}
+
+/* Style for the checkboxes */
+.user-checkbox {
+    float: right; /* Align checkboxes to the right */
+    margin-left: 10px; /* Add space between the checkbox and label */
+}
+
+/* Style for the user names */
+.user-name {
+    display: block; /* Display user names as block elements */
+   
+}
+#chatapp{
+    border: 1px solid wheat;
+    background-color: rgb(6, 6, 73);;
+    margin-top: 10px;
+}
+
+.group-settings-button {
+    padding: 5px 10px;
+    background-color: #307fcf;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto; /* Push the button to the right */
+    margin-right: 10px;
+}
+
+
+#groupnameontop .group-settings-button {
+    margin-right: 30px; /* Adjust the margin value as needed */
+}
+
+
+

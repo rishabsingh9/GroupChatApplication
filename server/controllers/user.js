@@ -2,6 +2,8 @@ const { json } = require("body-parser");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt=require('jsonwebtoken');
+const sequelize = require("../util/database");
+const { Op } = require('sequelize');
 
 exports.signUp = async (req, res, next) => {
     const { name, email,phonenumber, password } = req.body;
@@ -98,10 +100,15 @@ function generateAccessToken(id,name,isPremiumUser){
     }
   }
 exports.getAllUsers=async(req,res,next)=>{
+  const userIdToExclude=req.user.id;
+
   try {
     const data=await User.findAll();
-    res.status(200).json({allusers:data});
+    const filteredUsers = data.filter((user) => user.id !== userIdToExclude);
+    
+    res.status(200).json({allusers:filteredUsers});
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       error: err,
     });
@@ -109,16 +116,34 @@ exports.getAllUsers=async(req,res,next)=>{
 }
 
 
+exports.getUser = async (req, res, next) => {
+  try {
+      const input = req.query.input; // This should be either an email or a phone number
+      console.log(input);
 
-  exports.getUser=async(req,res,next)=>{
-    try {
-      let id=req.params.id;
-      const data=await User.findOne({id});
-      res.status(200).json({user:data});
-    } catch (err) {
+      if (input) {
+        const data = await User.findOne({
+          where: {
+              [Op.or]: [
+                  { email: input },
+                  { phonenumber: input }
+              ]
+          }
+      });
+          console.log('User Data:', data);
+
+          if (data) {
+              res.status(200).json({ user: data });
+          } else {
+              res.status(404).json({ message: 'User not found' });
+          }
+      } else {
+          res.status(400).json({ message: 'Invalid input' });
+      }
+  } catch (err) {
       console.log(err);
       res.status(500).json({
-        error: err,
+          error: err,
       });
-    }
   }
+}
