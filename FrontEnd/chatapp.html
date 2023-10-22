@@ -24,7 +24,7 @@
             </div>
             </div>
             
-            <button class="btn btn-secondary" id="creategroup" type="click">Create new group</button>
+            <button class="btn btn-secondary" id="creategroup" type="button">Create new group</button>
                 <div style="display: none;" id="groupform" >
                 <input type="text" id="groupname" placeholder="Enter group name">
                 <button type="click" id="adduserbtn">Add New Users</button>
@@ -44,8 +44,11 @@
             
             <!-- Messages will be displayed here -->
         </div>
+        <input type="file" id="fileInput" accept=".jpg, .jpeg, .png, .mp4, .avi, .pdf" />
+        <button id="uploadButton" type="button">Upload</button>
+
         <input type="text" id="message" placeholder="Type your message">
-        <button type="click" id="send-button">Send</button>
+        <button type="button" id="send-button">Send</button>
     </div>
     
 
@@ -56,11 +59,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
 <!-- Include Axios JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>-->
+<!-- Include Socket.IO JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+<!-- Include your custom JavaScript -->
+<script type="module" src="chatapp.js"></script>
 
-<!-- Include your custom JavaScript file -->
-<script src="chatapp.js"></script>
 
 </body>
 </html>

@@ -2,6 +2,9 @@
 let selectedGroupElement;
 var defaultGroupId;
 const sendButton = document.getElementById("send-button");
+let groupId;
+
+
 
 sendButton.addEventListener('click',async()=>{
     const messageInput = document.getElementById("message");
@@ -23,7 +26,33 @@ sendButton.addEventListener('click',async()=>{
         console.log(error);
     }
 });
-
+// sendButton.addEventListener('click', () => {
+//     const messageInput = document.getElementById('message');
+//     const message = messageInput.value;
+//     const groupId = localStorage.getItem('groupid');
+  
+//     const obj = {
+//       message: message,
+//       groupId: groupId,
+//     };
+  
+//     messageInput.value = '';
+  
+//     const token = localStorage.getItem('token');
+  
+//     try {
+//       // Send the message to the server via WebSocket
+//       socket.emit('sendMessage', obj);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   });
+  
+//   // Receive messages from the server via WebSocket
+//   socket.on('receiveMessage', (message) => {
+//     // Display the received message in the chat interface
+//     displayMessage(message.name, message.message);
+//   });
 // let chatMessages = [];
 
 // // Define the maximum number of messages to keep
@@ -73,13 +102,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 })
 
-function displayMessage(name, message) {
-    const messageContainer = document.getElementById('message-container');
-    const messageElement = document.createElement('div');
-    messageElement.className = 'message';
-    messageElement.innerHTML = `<strong>${name}:</strong> ${message}`;
-    messageContainer.appendChild(messageElement);
-}
 
 
 async function fetchdata(groupId){
@@ -118,7 +140,7 @@ async function fetchdata(groupId){
     }
 }
 
-setInterval(fetchdata(defaultGroupId), 1000);
+
 
 setInterval(() => {
    let groupId=localStorage.getItem('groupid')
@@ -126,15 +148,36 @@ setInterval(() => {
 }, 1000);
 
 
+// function displayMessage(name, message, messageClass) {
+//     const messageContainer = document.getElementById('message-container');
+//     const messageElement = document.createElement('div');
+//     messageElement.className = `message ${messageClass}`;
+//     messageElement.innerHTML = `<strong>${name}:</strong> ${message}`;
+//     messageContainer.appendChild(messageElement);
+//    // messageContainer.scrollTop = messageContainer.scrollHeight;
+// }
 function displayMessage(name, message, messageClass) {
-    const messageContainer = document.getElementById('message-container');
-    const messageElement = document.createElement('div');
-    messageElement.className = `message ${messageClass}`;
-    messageElement.innerHTML = `<strong>${name}:</strong> ${message}`;
-    messageContainer.appendChild(messageElement);
-   // messageContainer.scrollTop = messageContainer.scrollHeight;
+  const messageContainer = document.getElementById('message-container');
+  const messageElement = document.createElement('div');
+  messageElement.className = `message ${messageClass}`;
+  
+  
+  if (message.startsWith('http') || message.startsWith('https')) {
+      
+      const link = document.createElement('a');
+      link.href = message;
+      link.target = '_blank'; 
+      link.textContent = message; 
+      messageElement.innerHTML = `<strong>${name}:</strong> `;
+      messageElement.appendChild(link);
+  } else {
+      // If it's not a URL, display it as regular text
+      messageElement.innerHTML = `<strong>${name}:</strong> ${message}`;
+  }
+
+  messageContainer.appendChild(messageElement);
+  // messageContainer.scrollTop = messageContainer.scrollHeight;
 }
-//fetchdata(1);
 
 
 //groups
@@ -153,7 +196,7 @@ createGroup.addEventListener('click',()=>{
 async function showGroups(name,groupId){
     var groupList=document.getElementById('group-list');
     const groupElement = document.createElement('div');
-    groupElement.setAttribute('data-group-id', groupId); // Set the group ID as an attribute
+    groupElement.setAttribute('data-group-id', groupId); 
         groupElement.innerHTML =`<strong>${name}</strong>` ;
         groupElement.style.border = "1px solid #000";
         groupElement.classList.add('group-item');
@@ -161,8 +204,7 @@ async function showGroups(name,groupId){
         
     groupList.appendChild(groupElement);
     groupElement.addEventListener('click', async() => {
-        // Handle entering the group, e.g., by redirecting to the group's chat page.
-        // You can use the group's ID or name to identify and enter the group.
+       
         selectedGroupElement = groupElement;
         const groupId = groupElement.getAttribute('data-group-id');
         localStorage.setItem("groupid",groupId);
@@ -181,24 +223,18 @@ function clearMessages(){
     messageContainer.innerHTML = '';
 }
 
-// function groupOnTop(name){
-//     console.log("calling",name);
-//     const gdiv = document.getElementById('groupname');
-//     gdiv.innerHTML = `${name}`;
-    
-//  }
 function groupOnTop(name) {
     console.log("calling", name);
     const gdiv = document.getElementById('groupnameontop');
-    gdiv.innerHTML = ''; // Clear existing content
-    const groupNameElement = document.createElement('div'); // Create a new element
-    groupNameElement.textContent = name; // Set the text content
+    gdiv.innerHTML = ''; 
+    const groupNameElement = document.createElement('div'); 
+    groupNameElement.textContent = name; 
     const settingsbutton=document.createElement('button');
     settingsbutton.setAttribute('id','settingsbtn');
     settingsbutton.classList.add('group-settings-button');
     settingsbutton.textContent='Group Settings'
     groupNameElement.appendChild(settingsbutton);
-    gdiv.appendChild(groupNameElement); // Append it to #groupname
+    gdiv.appendChild(groupNameElement); 
 
     settingsbutton.addEventListener('click',()=>{
         window.location.href='/FrontEnd/updateGroup.html'
@@ -245,3 +281,51 @@ searchbtn.addEventListener('click', async () => {
        alert("user not found");
     }
 });
+
+const fileInput = document.getElementById("fileInput");
+const uploadButton = document.getElementById("uploadButton");
+var filetype;
+
+fileInput.addEventListener("change", (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+         filetype = selectedFile.type;
+        console.log(`File type: ${filetype}`);
+    }
+});
+
+uploadButton.addEventListener("click", () => {
+    const token=localStorage.getItem('token');
+    console.log("token",token)
+  const file =  fileInput.files[0]; // Get the selected file
+  console.log('file',filetype);
+  if (!file) {
+    alert("Please select a file.");
+    return;
+  }
+
+ 
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("type",filetype);
+  let groupId=localStorage.getItem('groupid');
+
+ 
+  axios.post(`http://localhost:3000/chatapp/upload`,formData,{ headers: { "Authorization": token, "Content-Type": "multipart/form-data" } })
+    .then((data) => {
+      if (data.data.success) {
+        alert("File uploaded successfully.");
+        
+      } else {
+        alert("File upload failed.");
+      }
+    })
+    .catch((error) => {
+      alert("An error occurred during the upload.");
+      console.log("file", file);
+      console.error(error);
+    });
+   
+});
+

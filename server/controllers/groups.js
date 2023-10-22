@@ -132,20 +132,11 @@ exports.addGroupUsers = async (req, res, next) => {
     }
   }
 
-  // exports.removeGroupUser=async(req,res,next)=>{
-  //   const {userId,groupId}=req.body;
-  //   try {
-  //     await GroupUsers.destroy({where:{userId,groupId}});
-  //     res.status(200).json({message:"user removed from group"});
-  //   } catch (err) {
-  //     res.status(500).json({error:err})
-  //   }
-  // }
   exports.removeGroupUser = async (req, res, next) => {
     const { userId, groupId } = req.body;
 
     try {
-        // Check if the user and group exist
+        
         const userExists = await User.findOne({ where: { id: userId } });
         const groupExists = await Group.findOne({ where: { id: groupId } });
 
@@ -153,7 +144,7 @@ exports.addGroupUsers = async (req, res, next) => {
             return res.status(404).json({ message: "User or group not found." });
         }
 
-        // Attempt to remove the user from the group
+        
         await GroupUsers.destroy({ where: { userId, groupId } });
 
         res.status(200).json({ message: "User removed from the group." });
@@ -163,21 +154,18 @@ exports.addGroupUsers = async (req, res, next) => {
     }
 }
 
-// Import your models and necessary dependencies
-
-// Define a controller function to make a user an admin in a group
 exports.makeUserAdmin = async (req, res, next) => {
   const { userId, groupId } = req.body;
 
   try {
-      // Check if the user is a member of the group
+      
       const groupUser = await GroupUsers.findOne({ where: { userId, groupId } });
 
       if (!groupUser) {
           return res.status(404).json({ message: "User is not a member of the group." });
       }
 
-      // Update the is_admin flag to true
+      
       await GroupUsers.update({ isadmin: true }, { where: { userId, groupId } });
 
       res.status(200).json({ message: "User is now an admin of the group." });

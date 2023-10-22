@@ -3,6 +3,11 @@ const fs=require('fs');
 var cors=require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const schedule = require('node-schedule');
+const { moveAndDeleteOldMessages } = require('./controllers/messages'); 
+
+
 
 
 const sequelize=require('./util/database')
@@ -15,6 +20,7 @@ const GroupUsers=require('./models/groupUsers');
 
 const app = express();
 
+
 app.use(express.json());
 
 app.use(cors({
@@ -25,6 +31,9 @@ app.use(cors({
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(fileUpload());
+//socket
+
 
 const userRoutes=require('./routes/user');
 const messageRoutes=require('./routes/messages');
@@ -46,6 +55,15 @@ Group.belongsToMany(User, {
  });
 
  Group.hasMany(Message);
+ const job = schedule.scheduleJob('0 0 * * *', async () => {
+   // Call the function to move and delete old messages
+   await moveAndDeleteOldMessages();
+});
+
+// io.on("connection",socket=>{
+//    console.log(socket.id);
+// })
+
 
 sequelize
 //.sync({force:true})
@@ -53,5 +71,6 @@ sequelize
 .then(result=>{
    
    app.listen(3000);
+   
 })
 .catch(err=>console.log(err));
